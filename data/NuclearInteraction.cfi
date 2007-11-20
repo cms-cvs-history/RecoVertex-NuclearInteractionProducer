@@ -1,0 +1,12 @@
+module nuclearInteractionMaker = NuclearInteractionEDProducer {
+
+         # Primary trajectories producer
+         string primaryProducer="TrackRefitter"
+
+         # Nuclear seeds producer
+         string seedsProducer="nuclearSeed"
+
+         # Secondary tracks producer
+         string secondaryProducer="nuclearWithMaterialTracks"
+
+}
