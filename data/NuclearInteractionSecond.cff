@@ -64,7 +64,7 @@ replace  nuclearWithMaterialTracks.src ="nuclearTrackCandidates"
 replace KFFittingSmoother.MinNumberOfHits = 3
 
 
-include "RecoTracker/NuclearSeedGenerator/data/NuclearInteraction.cfi"
+include "RecoVertex/NuclearInteractionProducer/data/NuclearInteraction.cfi"
 
 
 include "RecoTracker/NuclearSeedGenerator/data/NuclearTrackCorrector.cfi"
