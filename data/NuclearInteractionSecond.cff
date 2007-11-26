@@ -41,12 +41,13 @@ replace nuclearMeasurementTracker.stripClusterProducer = "nuclearClusters"
 include "RecoTracker/NuclearSeedGenerator/data/NuclearSeed.cfi"
 replace nuclearSeed.MeasurementTrackerName="nuclearMeasurementTracker"
 
+include "TrackingTools/TrajectoryFiltering/data/TrajectoryFilter.cff"
 ##FILTER
 es_module nuclearCkfTrajectoryFilter = trajectoryFilterESProducer from "TrackingTools/TrajectoryFiltering/data/TrajectoryFilterESProducer.cfi"
 replace nuclearCkfTrajectoryFilter.ComponentName = "nuclearCkfTrajectoryFilter"
-replace nuclearCkfTrajectoryFilter.filterPSet.minPt = 0.3
-replace nuclearCkfTrajectoryFilter.filterPSet.maxLostHit = 0
-replace nuclearCkfTrajectoryFilter.filterPSet.minimumNumberOfHits = 3
+replace nuclearCkfTrajectoryFilter.filterPset.minPt = 0.3
+replace nuclearCkfTrajectoryFilter.filterPset.maxLostHits = 0
+replace nuclearCkfTrajectoryFilter.filterPset.minimumNumberOfHits = 3
 
 ##TRAJECTORY BUILDER
 es_module nuclearCkfTrajectoryBuilder = CkfTrajectoryBuilder from "RecoTracker/CkfPattern/data/CkfTrajectoryBuilderESProducer.cfi"
