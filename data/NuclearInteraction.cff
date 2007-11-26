@@ -11,13 +11,14 @@ include "RecoTracker/TkNavigation/data/NavigationSchoolESProducer.cff"
 # Pattern Recognition and Fit
 include "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cff"
 include "RecoTracker/CkfPattern/data/CkfTrackCandidates.cff"
+include "TrackingTools/TrajectoryFiltering/data/TrajectoryFilter.cff"
 
 ##FILTER
 es_module nuclearCkfTrajectoryFilter = trajectoryFilterESProducer from "TrackingTools/TrajectoryFiltering/data/TrajectoryFilterESProducer.cfi"
 replace nuclearCkfTrajectoryFilter.ComponentName = "nuclearCkfTrajectoryFilter"
-replace nuclearCkfTrajectoryFilter.filterPSet.minPt = 0.3
-replace nuclearCkfTrajectoryFilter.filterPSet.maxLostHit = 0
-replace nuclearCkfTrajectoryFilter.filterPSet.minimumNumberOfHits = 3
+replace nuclearCkfTrajectoryFilter.filterPset.minPt = 0.3
+replace nuclearCkfTrajectoryFilter.filterPset.maxLostHits  = 1
+replace nuclearCkfTrajectoryFilter.filterPset.minimumNumberOfHits = 3
 
 ##TRAJECTORY BUILDER
 es_module nuclearCkfTrajectoryBuilder = CkfTrajectoryBuilder from "RecoTracker/CkfPattern/data/CkfTrajectoryBuilderESProducer.cfi"
