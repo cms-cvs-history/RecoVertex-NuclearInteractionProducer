@@ -41,14 +41,18 @@ replace nuclearMeasurementTracker.stripClusterProducer = "nuclearClusters"
 include "RecoTracker/NuclearSeedGenerator/data/NuclearSeed.cfi"
 replace nuclearSeed.MeasurementTrackerName="nuclearMeasurementTracker"
 
+##FILTER
+es_module nuclearCkfTrajectoryFilter = trajectoryFilterESProducer from "TrackingTools/TrajectoryFiltering/data/TrajectoryFilterESProducer.cfi"
+replace nuclearCkfTrajectoryFilter.ComponentName = "nuclearCkfTrajectoryFilter"
+replace nuclearCkfTrajectoryFilter.filterPSet.minPt = 0.3
+replace nuclearCkfTrajectoryFilter.filterPSet.maxLostHit = 0
+replace nuclearCkfTrajectoryFilter.filterPSet.minimumNumberOfHits = 3
+
 ##TRAJECTORY BUILDER
-es_module nuclearCkfTrajectoryBuilder =
-   CkfTrajectoryBuilder from "RecoTracker/CkfPattern/data/CkfTrajectoryBuilderESProducer.cfi"
+es_module nuclearCkfTrajectoryBuilder = CkfTrajectoryBuilder from "RecoTracker/CkfPattern/data/CkfTrajectoryBuilderESProducer.cfi"
 replace nuclearCkfTrajectoryBuilder.ComponentName = "nuclearCkfTrajectoryBuilder"
-replace nuclearCkfTrajectoryBuilder.MeasurementTrackerName = "nuclearMeasurementTracker"
-replace nuclearCkfTrajectoryBuilder.ptCut = 0.3
-replace nuclearCkfTrajectoryBuilder.maxLostHit = 0
-replace nuclearCkfTrajectoryBuilder.minimumNumberOfHits = 3
+replace nuclearCkfTrajectoryBuilder.trajectoryFilterName = "nuclearCkfTrajectoryFilter"
+replace nuclearCkfTrajectoryBuilder.alwaysUseInvalidHits = false
 
 ##TRACK CANDIDATES
 module nuclearTrackCandidates =
