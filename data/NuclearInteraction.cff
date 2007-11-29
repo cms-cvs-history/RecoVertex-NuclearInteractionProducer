@@ -1,4 +1,5 @@
 include "TrackingTools/TrackFitters/data/KFTrajectoryFitterESProducer.cfi"
+include "TrackingTools/TransientTrack/data/TransientTrackBuilder.cfi"
 
 #Magnetic Field and Geometry
 include "MagneticField/Engine/data/volumeBasedMagneticField.cfi"
@@ -32,6 +33,7 @@ module nuclearTrackCandidates =
    ckfTrackCandidates from "RecoTracker/CkfPattern/data/CkfTrackCandidates.cfi"
 replace nuclearTrackCandidates.SeedProducer= "nuclearSeed"
 replace nuclearTrackCandidates.TrajectoryBuilder = "nuclearCkfTrajectoryBuilder"
+replace nuclearTrackCandidates.RedundantSeedCleaner = "none"
 
 
 ##TRACKS

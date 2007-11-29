@@ -60,6 +60,7 @@ module nuclearTrackCandidates =
    ckfTrackCandidates from "RecoTracker/CkfPattern/data/CkfTrackCandidates.cfi"
 replace nuclearTrackCandidates.SeedProducer= "nuclearSeed"
 replace nuclearTrackCandidates.TrajectoryBuilder = "nuclearCkfTrajectoryBuilder"
+replace nuclearTrackCandidates.RedundantSeedCleaner = "none"
 
 
 ##TRACKS
