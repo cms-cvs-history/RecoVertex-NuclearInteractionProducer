@@ -40,7 +40,7 @@ replace nuclearTrackCandidates.RedundantSeedCleaner = "none"
 module nuclearWithMaterialTracks = 
   ctfWithMaterialTracks from "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cfi"
 replace  nuclearWithMaterialTracks.src ="nuclearTrackCandidates"       
-replace KFFittingSmoother.MinNumberOfHits = 3
+replace FittingSmootherRK.MinNumberOfHits = 3
 
 
 include "RecoTracker/NuclearSeedGenerator/data/NuclearSeed.cfi"
