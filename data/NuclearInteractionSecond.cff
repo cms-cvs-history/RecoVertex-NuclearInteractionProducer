@@ -78,5 +78,5 @@ include "RecoTracker/NuclearSeedGenerator/data/NuclearTrackCorrector.cfi"
 sequence nuclear_seed_second = { nuclearClusters, nuclearPixelRecHits, nuclearStripRecHits, nuclearSeed }
 
 sequence nuclear_interaction_second = { nuclear_seed_second, nuclearTrackCandidates, nuclearWithMaterialTracks, nuclearInteractionMaker }
-sequence nuclear_interaction_second_and_correction = { nuclear_tracking_second, TrackCorrector }
+sequence nuclear_interaction_second_and_correction = { nuclear_interaction_second, TrackCorrector }
 
