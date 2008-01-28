@@ -1,12 +1,4 @@
-include "TrackingTools/TrackFitters/data/KFTrajectoryFitterESProducer.cfi"
-
-#Magnetic Field
-include "MagneticField/Engine/data/volumeBasedMagneticField.cfi"
-include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
-include "Geometry/CommonDetUnit/data/globalTrackingGeometry.cfi"
-
-include "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cff"
-include "RecoTracker/CkfPattern/data/CkfTrackCandidates.cff"
+include "RecoVertex/NuclearInteractionProducer/data/NuclearInteraction.cff"
 
 ##HIT REMOVAL
 module nuclearClusters = RemainingClusterProducer{
@@ -36,47 +28,13 @@ replace nuclearMeasurementTracker.ComponentName = "nuclearMeasurementTracker"
 replace nuclearMeasurementTracker.pixelClusterProducer = "nuclearClusters"
 replace nuclearMeasurementTracker.stripClusterProducer = "nuclearClusters"
 
-
 ## SEEDS
-include "RecoTracker/NuclearSeedGenerator/data/NuclearSeed.cfi"
 replace nuclearSeed.MeasurementTrackerName="nuclearMeasurementTracker"
 
-include "TrackingTools/TrajectoryFiltering/data/TrajectoryFilter.cff"
-##FILTER
-es_module nuclearCkfTrajectoryFilter = trajectoryFilterESProducer from "TrackingTools/TrajectoryFiltering/data/TrajectoryFilterESProducer.cfi"
-replace nuclearCkfTrajectoryFilter.ComponentName = "nuclearCkfTrajectoryFilter"
-replace nuclearCkfTrajectoryFilter.filterPset.minPt = 0.3
-replace nuclearCkfTrajectoryFilter.filterPset.maxLostHits = 0
-replace nuclearCkfTrajectoryFilter.filterPset.minimumNumberOfHits = 3
-
 ##TRAJECTORY BUILDER
-es_module nuclearCkfTrajectoryBuilder = CkfTrajectoryBuilder from "RecoTracker/CkfPattern/data/CkfTrajectoryBuilderESProducer.cfi"
-replace nuclearCkfTrajectoryBuilder.ComponentName = "nuclearCkfTrajectoryBuilder"
-replace nuclearCkfTrajectoryBuilder.trajectoryFilterName = "nuclearCkfTrajectoryFilter"
-replace nuclearCkfTrajectoryBuilder.alwaysUseInvalidHits = false
-
-##TRACK CANDIDATES
-module nuclearTrackCandidates =
-   ckfTrackCandidates from "RecoTracker/CkfPattern/data/CkfTrackCandidates.cfi"
-replace nuclearTrackCandidates.SeedProducer= "nuclearSeed"
-replace nuclearTrackCandidates.TrajectoryBuilder = "nuclearCkfTrajectoryBuilder"
-replace nuclearTrackCandidates.RedundantSeedCleaner = "none"
-
-
-##TRACKS
-module nuclearWithMaterialTracks = 
-  ctfWithMaterialTracks from "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cfi"
-replace  nuclearWithMaterialTracks.src ="nuclearTrackCandidates"       
-replace KFFittingSmoother.MinNumberOfHits = 3
-
-
-include "RecoVertex/NuclearInteractionProducer/data/NuclearInteraction.cfi"
-
-
-include "RecoTracker/NuclearSeedGenerator/data/NuclearTrackCorrector.cfi"
+replace nuclearCkfTrajectoryBuilder.MeasurementTrackerName = "nuclearMeasurementTracker"
 
 sequence nuclear_seed_second = { nuclearClusters, nuclearPixelRecHits, nuclearStripRecHits, nuclearSeed }
 
 sequence nuclear_interaction_second = { nuclear_seed_second, nuclearTrackCandidates, nuclearWithMaterialTracks, nuclearInteractionMaker }
 sequence nuclear_interaction_second_and_correction = { nuclear_interaction_second, TrackCorrector }
-
