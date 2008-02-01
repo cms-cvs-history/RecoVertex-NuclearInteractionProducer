@@ -9,4 +9,9 @@ module nuclearInteractionMaker = NuclearInteractionEDProducer {
          # Secondary tracks producer
          string secondaryProducer="nuclearWithMaterialTracks"
 
+         # Minimum distance between primary and secondary tracks
+         # all secondary tracks with distance > minDistFromPrimary
+         # are rejected
+         double minDistFromPrimary = 100
+
 }
