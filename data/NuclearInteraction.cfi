@@ -14,4 +14,7 @@ module nuclearInteractionMaker = NuclearInteractionEDProducer {
          # are rejected
          double minDistFromPrimary = 100
 
+         # chi2 cut on secondary tracks
+         double chi2Cut = 100
+
 }
