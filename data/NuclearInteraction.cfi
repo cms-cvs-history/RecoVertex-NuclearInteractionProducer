@@ -9,6 +9,9 @@ module nuclearInteractionMaker = NuclearInteractionEDProducer {
          # Secondary tracks producer
          string secondaryProducer="nuclearWithMaterialTracks"
 
+         # Additional secondary track producer (example TOB-TEC)
+         string additionalSecondaryProducer="none"
+
          # Minimum distance between primary and secondary tracks
          # all secondary tracks with distance > minDistFromPrimary
          # are rejected
@@ -16,5 +19,14 @@ module nuclearInteractionMaker = NuclearInteractionEDProducer {
 
          # chi2 cut on secondary tracks
          double chi2Cut = 100
+
+         # other criterium of quality on the secondary tarcks
+         double DPtovPtCut = 999.9
+
+         # minimum shared fraction to be called duplicate
+         double shareFrac = 0.66
+
+         # minimum distance from the vertex (for additional tracks)
+         double minDistFromVtx = 20
 
 }
