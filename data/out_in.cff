@@ -1,0 +1,86 @@
+module myfirstfilter = QualityFilter{
+    InputTag recTracks         = generalTracks:
+    string TrackQuality        = "highPurity"
+}
+
+module outInClusters = TrackClusterRemover{
+    InputTag stripClusters = siStripClusters
+    InputTag pixelClusters = siPixelClusters
+    InputTag trajectories  = myfirstfilter
+# cerati taglia chi2>15
+    PSet Common = { double maxChi2 = 30.0  }
+    PSet Strip  = { double maxChi2 = 10.0
+                    uint32 maxSize = 5 }
+}
+
+include "RecoTracker/TkSeedGenerator/data/GlobalTobTecSeeds.cff"
+
+### new region parameters (just an initial test)
+replace globalTobTecSeeds.RegionFactoryPSet.RegionPSet.originRadius = 30
+replace globalTobTecSeeds.RegionFactoryPSet.RegionPSet.originHalfLength = 30
+
+#######################################
+
+
+module outInStripRecHits = 
+  siStripMatchedRecHits from "RecoLocalTracker/SiStripRecHitConverter/data/SiStripRecHitConverter.cfi"
+  replace outInStripRecHits.ClusterProducer = "outInClusters"
+
+  replace tobteclayerpairs.TOB.matchedRecHits = outInStripRecHits:matchedRecHit
+  replace tobteclayerpairs.TEC.matchedRecHits = outInStripRecHits:matchedRecHit
+  replace tobteclayerpairs.TEC1_neg.matchedRecHits = outInStripRecHits:matchedRecHit
+  replace tobteclayerpairs.TEC1_neg.rphiRecHits = outInStripRecHits:rphiRecHit
+  replace tobteclayerpairs.TEC1_pos.matchedRecHits = outInStripRecHits:matchedRecHit
+  replace tobteclayerpairs.TEC1_pos.rphiRecHits = outInStripRecHits:rphiRecHit
+  replace tobteclayerpairs.TEC2_neg.matchedRecHits = outInStripRecHits:matchedRecHit
+  replace tobteclayerpairs.TEC2_neg.rphiRecHits = outInStripRecHits:rphiRecHit
+  replace tobteclayerpairs.TEC2_pos.matchedRecHits = outInStripRecHits:matchedRecHit
+  replace tobteclayerpairs.TEC2_pos.rphiRecHits = outInStripRecHits:rphiRecHit
+
+##TRAJECTORY MEASUREMENT
+es_module outInMeasurementTracker =
+   MeasurementTracker from "RecoTracker/MeasurementDet/data/MeasurementTrackerESProducer.cfi"
+  replace outInMeasurementTracker.ComponentName = "outInMeasurementTracker"
+  replace outInMeasurementTracker.pixelClusterProducer = "outInClusters"
+  replace outInMeasurementTracker.stripClusterProducer = "outInClusters"
+
+
+##TRAJECTORY FILTER
+es_module outInCkfTrajectoryFilter = trajectoryFilterESProducer from "TrackingTools/TrajectoryFiltering/data/TrajectoryFilterESProducer.cfi"
+replace outInCkfTrajectoryFilter.ComponentName = "outInCkfTrajectoryFilter"
+#replace outInCkfTrajectoryFilter.filterPset.maxLostHits = 1
+#replace outInCkfTrajectoryFilter.filterPset.minimumNumberOfHits = 3
+#replace outInCkfTrajectoryFilter.filterPset.minPt   = 0.3
+
+##TRAJECTORY BUILDER
+es_module outInCkfTrajectoryBuilder =
+   GroupedCkfTrajectoryBuilder from "RecoTracker/CkfPattern/data/GroupedCkfTrajectoryBuilderESProducer.cfi"
+replace outInCkfTrajectoryBuilder.ComponentName = "outInCkfTrajectoryBuilder"
+replace outInCkfTrajectoryBuilder.MeasurementTrackerName = "outInMeasurementTracker"
+replace outInCkfTrajectoryBuilder.trajectoryFilterName = "outInCkfTrajectoryFilter"
+replace outInCkfTrajectoryBuilder.minNrOfHitsForRebuild = 2
+
+##TRACK CANDIDATES
+module outInTrackCandidates =
+   ckfTrackCandidates from "RecoTracker/CkfPattern/data/CkfTrackCandidates.cfi"
+ replace outInTrackCandidates.SeedProducer= "globalTobTecSeeds"
+ replace outInTrackCandidates.TrajectoryBuilder = "outInCkfTrajectoryBuilder"
+
+####### necessary for rebuilding starting from CMSSW_2_0_0_pre7 release	
+replace outInTrackCandidates.doSeedingRegionRebuilding = true
+##############################################################################################
+
+##TRACKS
+module outInWithMaterialTracks = 
+  ctfWithMaterialTracks from "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cfi"
+#replace  outInWithMaterialTracks.src = outInTrackCandidates       
+replace  outInWithMaterialTracks.src = outInTrackCandidates       
+replace  outInWithMaterialTracks.clusterRemovalInfo = outInClusters
+
+
+
+sequence out_in_tracks = {newTracking, 
+	myfirstfilter, outInClusters, outInStripRecHits, 
+	globalTobTecSeeds, outInTrackCandidates, outInWithMaterialTracks
+        }
+
