@@ -1,12 +1,13 @@
-module outInFilter = QualityFilter{
-    InputTag recTracks         = generalTracks:
-    string TrackQuality        = "highPurity"
-}
+#module outInFilter = QualityFilter{
+#    InputTag recTracks         = generalTracks:
+#    string TrackQuality        = "highPurity"
+#}
 
 module outInClusters = TrackClusterRemover{
     InputTag stripClusters = siStripClusters
     InputTag pixelClusters = siPixelClusters
-    InputTag trajectories  = outInFilter
+#    InputTag trajectories  = outInFilter
+    InputTag trajectories  = generalTracks
 # cerati taglia chi2>15
     PSet Common = { double maxChi2 = 30.0  }
     PSet Strip  = { double maxChi2 = 10.0
@@ -79,8 +80,11 @@ replace  outInWithMaterialTracks.clusterRemovalInfo = outInClusters
 
 
 
-sequence out_in_tracks = {newTracking, 
-	outInFilter, outInClusters, outInStripRecHits, 
-	globalTobTecSeeds, outInTrackCandidates, outInWithMaterialTracks
+sequence out_in_tracks = { 
+#	outInFilter, 
+        outInClusters, 
+        outInStripRecHits, 
+	globalTobTecSeeds, 
+        outInTrackCandidates, 
+        outInWithMaterialTracks
         }
-
