@@ -2,7 +2,6 @@ include "TrackingTools/TrackFitters/data/KFTrajectoryFitterESProducer.cfi"
 include "TrackingTools/TransientTrack/data/TransientTrackBuilder.cfi"
 
 #Magnetic Field and Geometry
-include "MagneticField/Engine/data/volumeBasedMagneticField.cfi"
 include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
 include "Geometry/CommonDetUnit/data/globalTrackingGeometry.cfi"
 
