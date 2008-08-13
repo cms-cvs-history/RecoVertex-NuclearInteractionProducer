@@ -2,14 +2,26 @@ include "RecoVertex/NuclearInteractionProducer/data/NuclearInteraction.cff"
 include "RecoLocalTracker/SiPixelRecHits/data/PixelCPEESProducers.cff"
 
 ##HIT REMOVAL
-module nuclearClusters = RemainingClusterProducer{
-     InputTag matchedRecHits    = siStripMatchedRecHits:matchedRecHit
-     InputTag rphirecHits       = siStripMatchedRecHits:rphiRecHit
-     InputTag stereorecHits     = siStripMatchedRecHits:stereoRecHit
-     InputTag pixelHits         = siPixelRecHits:
-     InputTag recTracks         = generalTracks:
-     double DistanceCut         = 0.1
+#module nuclearClusters = RemainingClusterProducer{
+#     InputTag matchedRecHits    = siStripMatchedRecHits:matchedRecHit
+#     InputTag rphirecHits       = siStripMatchedRecHits:rphiRecHit
+#     InputTag stereorecHits     = siStripMatchedRecHits:stereoRecHit
+#     InputTag pixelHits         = siPixelRecHits:
+#     InputTag recTracks         = generalTracks:
+#     double DistanceCut         = 0.1
+#}
+module nuclearClusters = TrackClusterRemover{
+    InputTag stripClusters = thClusters
+    InputTag pixelClusters = thClusters
+#    InputTag trajectories  = outInFilter
+    InputTag trajectories  = thStep
+
+# cerati taglia chi2>15
+    PSet Common = { double maxChi2 = 30.0  }
+    PSet Strip  = { double maxChi2 = 10.0
+                    uint32 maxSize = 5 }
 }
+
 
 
 ##TRACKER HITS

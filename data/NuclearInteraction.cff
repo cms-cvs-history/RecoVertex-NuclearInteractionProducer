@@ -39,15 +39,11 @@ replace nuclearTrackCandidates.RedundantSeedCleaner = "none"
 module nuclearWithMaterialTracks = 
   ctfWithMaterialTracks from "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cfi"
 replace  nuclearWithMaterialTracks.src =nuclearTrackCandidates 
-replace FittingSmootherRK.MinNumberOfHits = 3
+#replace FittingSmootherRK.MinNumberOfHits = 3
 
 
 include "RecoTracker/NuclearSeedGenerator/data/NuclearSeed.cfi"
 
 include "RecoVertex/NuclearInteractionProducer/data/NuclearInteraction.cfi"
 
-include "RecoTracker/NuclearSeedGenerator/data/NuclearTrackCorrector.cfi"
-
-
 sequence nuclear_interaction = { nuclearSeed, nuclearTrackCandidates, nuclearWithMaterialTracks, nuclearInteractionMaker }
-sequence nuclear_interaction_and_correction = { nuclear_interaction, TrackCorrector } 

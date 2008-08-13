@@ -4,10 +4,11 @@
 #}
 
 module outInClusters = TrackClusterRemover{
-    InputTag stripClusters = siStripClusters
-    InputTag pixelClusters = siPixelClusters
+    InputTag stripClusters = thClusters
+    InputTag pixelClusters = thClusters
 #    InputTag trajectories  = outInFilter
-    InputTag trajectories  = generalTracks
+    InputTag trajectories  = thStep
+
 # cerati taglia chi2>15
     PSet Common = { double maxChi2 = 30.0  }
     PSet Strip  = { double maxChi2 = 10.0
